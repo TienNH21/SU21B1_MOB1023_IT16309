@@ -5,8 +5,13 @@
  */
 package buoi34_swing;
 
+import buoi12.Nguoi;
 import buoi12.QLNguoi;
 import buoi12.QuanLyDanhSach;
+import buoi12.SinhVien;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,7 +25,7 @@ public class QLSV extends javax.swing.JFrame {
      */
     public QLSV() {
         initComponents();
-        
+        this.khoiTaoUI();
         this.qlsv = new QuanLyDanhSach();
     }
 
@@ -80,12 +85,27 @@ public class QLSV extends javax.swing.JFrame {
         cbbChuyenNganh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         btnCapNhat.setText("Cập nhật");
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnXoaForm.setText("Xóa form");
+        btnXoaForm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaFormActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -181,6 +201,11 @@ public class QLSV extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        tblSV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSVMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblSV);
 
         btnTaoSvAo.setText("Tạo SV Ảo");
@@ -239,7 +264,130 @@ public class QLSV extends javax.swing.JFrame {
 
     private void btnTaoSvAoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoSvAoActionPerformed
         this.qlsv.taoDoiTuongAo();
+
+        this.hienThiJTable();
     }//GEN-LAST:event_btnTaoSvAoActionPerformed
+
+    private void btnXoaFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaFormActionPerformed
+        this.khoiTaoUI();
+    }//GEN-LAST:event_btnXoaFormActionPerformed
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        String hoTen = this.txtHoTen.getText();
+        String maSV = this.txtMaSV.getText();
+        String diaChi = this.txtDiaChi.getText();
+        String queQuan = this.txtQueQuan.getText();
+        String chuyenNganh = this.cbbChuyenNganh.getSelectedItem().toString();
+
+        boolean gioiTinhNam = this.radioGtNam.isSelected();
+
+        // Toán tử 3 ngôi
+        int gioiTinh = (gioiTinhNam == true) ? 1 : 0;
+
+        // Kiểm tra form
+        if (
+            hoTen.length() == 0 ||
+            maSV.length() == 0 ||
+            diaChi.length() == 0 ||
+            queQuan.length() == 0
+        ) {
+            JOptionPane.showMessageDialog(this, "Không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            
+            return ;
+        }
+
+        SinhVien sv = new SinhVien(maSV, chuyenNganh, hoTen, queQuan, diaChi, gioiTinh);
+        
+        this.qlsv.them(sv);
+        
+        this.hienThiJTable();
+        this.khoiTaoUI();
+        
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void tblSVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSVMouseClicked
+        int viTri = this.tblSV.getSelectedRow();
+        
+        if (viTri == -1) {
+            return ;
+        }
+
+        // C1: DefaultTableModel -> đọc từ JTable
+        DefaultTableModel dtm = (DefaultTableModel) this.tblSV.getModel();
+        
+        String maSV = dtm.getValueAt(viTri, 0).toString();
+        String hoten = dtm.getValueAt(viTri, 1).toString();
+        Integer gioiTinh = (Integer) dtm.getValueAt(viTri, 2);
+        String chuyenNganh = dtm.getValueAt(viTri, 3).toString();
+        String queQuan = dtm.getValueAt(viTri, 4).toString();
+        String diaChi = dtm.getValueAt(viTri, 5).toString();
+        
+        this.txtMaSV.setText(maSV);
+        this.txtHoTen.setText(hoten);
+        this.txtQueQuan.setText(queQuan);
+        this.txtDiaChi.setText(diaChi);
+        this.cbbChuyenNganh.setSelectedItem(chuyenNganh);
+        
+        if (gioiTinh == 1) {
+            this.radioGtNam.setSelected(true);
+        } else {
+            this.radioGtNu.setSelected(true);
+        }
+
+        // C2: đọc từ ArrayList -> dành cho ong vàng
+        
+    }//GEN-LAST:event_tblSVMouseClicked
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int viTri = this.tblSV.getSelectedRow();
+        
+        if (viTri == -1) {
+            return ;
+        }
+        
+        this.qlsv.xoa(viTri);
+        this.hienThiJTable();
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void khoiTaoUI()
+    {
+        this.txtHoTen.setText("");
+        this.txtMaSV.setText("");
+        this.txtQueQuan.setText("");
+        this.txtDiaChi.setText("");
+
+        this.radioGtNam.setSelected(true);
+
+        this.cbbChuyenNganh.removeAllItems();
+        
+        this.cbbChuyenNganh.addItem("UDPM");
+        this.cbbChuyenNganh.addItem("TKTW");
+        this.cbbChuyenNganh.addItem("LTMT");
+    }
+
+    private void hienThiJTable()
+    {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblSV.getModel();
+        
+        // Xóa các dòng đang có trên JTable
+        dtm.setRowCount(0);
+
+        ArrayList<Nguoi> listSV = this.qlsv.xuatDanhSach();
+        for (int i = 0; i < listSV.size(); i++) {
+            SinhVien sv = (SinhVien) listSV.get(i);
+
+            Object[] rowData = new Object[] {
+                sv.getMaSV(),
+                sv.getHoTen(),
+                sv.getGioiTinh(),
+                sv.getChuyenNganh(),
+                sv.getQueQuan(),
+                sv.getDiaChi(),
+            };
+
+            dtm.addRow(rowData);
+        }
+    }
 
     /**
      * @param args the command line arguments

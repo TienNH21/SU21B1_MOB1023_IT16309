@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="groupGioiTinh">
     </Component>
@@ -224,6 +224,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Th&#xea;m"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnThemActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnCapNhat">
           <Properties>
@@ -234,11 +237,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXoaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnXoaForm">
           <Properties>
             <Property name="text" type="java.lang.String" value="X&#xf3;a form"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXoaFormActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -330,6 +339,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblSVMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
