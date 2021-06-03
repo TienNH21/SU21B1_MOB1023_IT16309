@@ -92,6 +92,11 @@ public class QLSV extends javax.swing.JFrame {
         });
 
         btnCapNhat.setText("Cập nhật");
+        btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhatActionPerformed(evt);
+            }
+        });
 
         btnXoa.setText("Xóa");
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
@@ -273,33 +278,14 @@ public class QLSV extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXoaFormActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        String hoTen = this.txtHoTen.getText();
-        String maSV = this.txtMaSV.getText();
-        String diaChi = this.txtDiaChi.getText();
-        String queQuan = this.txtQueQuan.getText();
-        String chuyenNganh = this.cbbChuyenNganh.getSelectedItem().toString();
-
-        boolean gioiTinhNam = this.radioGtNam.isSelected();
-
-        // Toán tử 3 ngôi
-        int gioiTinh = (gioiTinhNam == true) ? 1 : 0;
-
-        // Kiểm tra form
-        if (
-            hoTen.length() == 0 ||
-            maSV.length() == 0 ||
-            diaChi.length() == 0 ||
-            queQuan.length() == 0
-        ) {
-            JOptionPane.showMessageDialog(this, "Không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            
+        SinhVien sv = this.docForm();
+        
+        if (sv == null) {
             return ;
         }
 
-        SinhVien sv = new SinhVien(maSV, chuyenNganh, hoTen, queQuan, diaChi, gioiTinh);
-        
         this.qlsv.them(sv);
-        
+
         this.hienThiJTable();
         this.khoiTaoUI();
         
@@ -327,7 +313,7 @@ public class QLSV extends javax.swing.JFrame {
         this.txtQueQuan.setText(queQuan);
         this.txtDiaChi.setText(diaChi);
         this.cbbChuyenNganh.setSelectedItem(chuyenNganh);
-        
+
         if (gioiTinh == 1) {
             this.radioGtNam.setSelected(true);
         } else {
@@ -349,6 +335,58 @@ public class QLSV extends javax.swing.JFrame {
         this.hienThiJTable();
     }//GEN-LAST:event_btnXoaActionPerformed
 
+    private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
+        int viTri = this.tblSV.getSelectedRow();
+
+        if (viTri == -1) {
+            return;
+        }
+        
+        SinhVien sv = this.docForm();
+        if (sv == null) {
+            return ;
+        }
+
+        // Cập nhật dữ liệu vào ArrayList
+        this.qlsv.xuatDanhSach().set(viTri, sv);
+
+        // Cập nhật dữ liệu trên JTable
+        this.hienThiJTable();
+        
+        // Xóa trắng form
+        this.khoiTaoUI();
+    }//GEN-LAST:event_btnCapNhatActionPerformed
+
+    private SinhVien docForm()
+    {
+        String hoTen = this.txtHoTen.getText();
+        String maSV = this.txtMaSV.getText();
+        String diaChi = this.txtDiaChi.getText();
+        String queQuan = this.txtQueQuan.getText();
+        String chuyenNganh = this.cbbChuyenNganh.getSelectedItem().toString();
+
+        boolean gioiTinhNam = this.radioGtNam.isSelected();
+
+        // Toán tử 3 ngôi
+        int gioiTinh = (gioiTinhNam == true) ? 1 : 0;
+
+        // Kiểm tra form
+        if (
+            hoTen.length() == 0 ||
+            maSV.length() == 0 ||
+            diaChi.length() == 0 ||
+            queQuan.length() == 0
+        ) {
+            JOptionPane.showMessageDialog(this, "Không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+
+            return null;
+        }
+
+        SinhVien sv = new SinhVien(maSV, chuyenNganh, hoTen, queQuan, diaChi, gioiTinh);
+        
+        return sv;
+    }
+    
     private void khoiTaoUI()
     {
         this.txtHoTen.setText("");
