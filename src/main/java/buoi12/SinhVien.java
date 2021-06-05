@@ -5,11 +5,13 @@
  */
 package buoi12;
 
+import java.io.Serializable;
+
 /**
  *
  * @author tiennh
  */
-public class SinhVien extends Nguoi {
+public class SinhVien extends Nguoi implements Serializable  {
     /*
      * SinhVien được quyền truy cập tới những thuộc tính & phương thức (KO PRIVATE) của lớp Nguoi
      */

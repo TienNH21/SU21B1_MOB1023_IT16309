@@ -5,11 +5,13 @@
  */
 package buoi12;
 
+import java.io.Serializable;
+
 /**
  *
  * @author tiennh
  */
-public class Nguoi {
+public class Nguoi implements Serializable {
     // Thuộc tính
     private String hoTen;
     private String queQuan;

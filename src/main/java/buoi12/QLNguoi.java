@@ -17,4 +17,5 @@ public interface QLNguoi {
     public ArrayList<Nguoi> xuatDanhSach();
     public Nguoi getByViTri(int viTri);
     public void taoDoiTuongAo();
+    public void setDanhSach(ArrayList<Nguoi> list);
 }
