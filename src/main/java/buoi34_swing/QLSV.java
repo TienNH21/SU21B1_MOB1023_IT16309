@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -24,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author tiennh
  */
-public class QLSV extends javax.swing.JFrame {
+public class QLSV extends javax.swing.JFrame implements Runnable {
     private QLNguoi qlsv;
     private String filename = "src/main/java/buoi12/data.txt";
 
@@ -32,6 +33,9 @@ public class QLSV extends javax.swing.JFrame {
         initComponents();
         this.khoiTaoUI();
         this.qlsv = new QuanLyDanhSach();
+        
+        Thread t = new Thread(this);
+        t.start();
     }
 
     /**
@@ -68,6 +72,8 @@ public class QLSV extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSV = new javax.swing.JTable();
         btnTaoSvAo = new javax.swing.JButton();
+        lblClock = new javax.swing.JLabel();
+        lblTextRun = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -247,6 +253,10 @@ public class QLSV extends javax.swing.JFrame {
             }
         });
 
+        lblClock.setText("00:00:00");
+
+        lblTextRun.setText("FPT Polytechnic");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -255,16 +265,23 @@ public class QLSV extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblClock)
+                        .addGap(146, 146, 146)
+                        .addComponent(lblTextRun)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnTaoSvAo))
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnTaoSvAo)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnTaoSvAo, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblClock)
+                        .addComponent(lblTextRun)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -303,6 +320,28 @@ public class QLSV extends javax.swing.JFrame {
     private void btnXoaFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaFormActionPerformed
         this.khoiTaoUI();
     }//GEN-LAST:event_btnXoaFormActionPerformed
+
+    @Override
+    public void run () {
+        while (true) {
+            Calendar cal = Calendar.getInstance();
+            int hour = cal.get(Calendar.HOUR_OF_DAY);
+            int minute = cal.get(Calendar.MINUTE);
+            int second = cal.get(Calendar.SECOND);
+            String time = hour + ":" + minute + ":" + second;
+            this.lblClock.setText(time);
+            
+            String txt = this.lblTextRun.getText();
+            String newTxt = txt.substring(1) + txt.substring(0, 1);
+            this.lblTextRun.setText(newTxt);
+
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         SinhVien sv = this.docForm();
@@ -548,6 +587,8 @@ public class QLSV extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblClock;
+    private javax.swing.JLabel lblTextRun;
     private javax.swing.JRadioButton radioGtNam;
     private javax.swing.JRadioButton radioGtNu;
     private javax.swing.JTable tblSV;
